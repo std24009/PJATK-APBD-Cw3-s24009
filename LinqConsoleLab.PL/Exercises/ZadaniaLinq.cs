@@ -71,7 +71,7 @@ public sealed class ZadaniaLinq
             .Select(s => s.Nazwa + " " + s.DataStartu);
         
         return subject;
-        throw Niezaimplementowano(nameof(Zadanie04_PierwszyPrzedmiotAnalityczny));
+        //throw Niezaimplementowano(nameof(Zadanie04_PierwszyPrzedmiotAnalityczny));
     }
 
     /// <summary>
@@ -159,7 +159,11 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie09_TrzyNajnowszeZapisy()
     {
-        throw Niezaimplementowano(nameof(Zadanie09_TrzyNajnowszeZapisy));
+        var newJoin = DaneUczelni.Zapisy.OrderByDescending(s => s.DataZapisu)
+            .Take(3).Select(s => $"{s.DataZapisu} {s.StudentId} {s.PrzedmiotId}");
+        
+        return newJoin;
+        //throw Niezaimplementowano(nameof(Zadanie09_TrzyNajnowszeZapisy));
     }
 
     /// <summary>
@@ -190,7 +194,14 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie11_PolaczStudentowIZapisy()
     {
-        throw Niezaimplementowano(nameof(Zadanie11_PolaczStudentowIZapisy));
+        var joined = DaneUczelni.Studenci.Join(
+            DaneUczelni.Zapisy,
+            student => student.Id,
+            zapis => zapis.StudentId,
+            (student, zapis) => $"{student.Imie} {student.Nazwisko} {zapis.DataZapisu}"
+        );
+        
+        return joined;
     }
 
     /// <summary>
@@ -206,6 +217,15 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie12_ParyStudentPrzedmiot()
     {
+        var zapisy = DaneUczelni.Zapisy.Join(
+            DaneUczelni.Studenci,
+            zapis => zapis.StudentId,
+            student => student.Id,
+            (zapis, student) => new {zapis, student}
+            ).Join(
+                DaneUczelni.Przedmioty,
+                
+            )
         throw Niezaimplementowano(nameof(Zadanie12_ParyStudentPrzedmiot));
     }
 
